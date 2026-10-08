@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>مذاكرة PT</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800&display=swap">
+<style>
+:root{--bg:#eef2f6;--fg:#14213d;--mut:#5b6677;--card:#fff;--bd:#d5dce6;--ac:#f2a900;--ok:#0f766e;--bad:#c2410c}
+@media(prefers-color-scheme:dark){:root{--bg:#0f1622;--fg:#e8edf5;--mut:#9aa6b8;--card:#182235;--bd:#2a3850;--ok:#2dd4bf;--bad:#fb923c}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:Cairo,system-ui,sans-serif;line-height:1.8;font-size:16px}
+main{max-width:720px;margin:0 auto;padding:16px}
+h1{font-size:26px;font-weight:800;margin:8px 0 2px}h2{font-size:21px}h3{font-size:18px;margin:16px 0 4px}
+.sub,.empty{color:var(--mut);font-size:14px}
+button{font:inherit;cursor:pointer;color:var(--fg)}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}.chips[hidden]{display:none}
+.chip{border:1px solid var(--bd);background:var(--card);border-radius:20px;padding:4px 14px;font-size:14px}
+.chip.on{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.lec,.btn{display:block;width:100%;text-align:start;background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:10px 14px;margin:6px 0}
+.btn{width:auto;display:inline-block;padding:8px 14px;font-size:14px;margin:6px 6px 6px 0}
+.act,.cram{width:100%;border:0;border-radius:12px;padding:12px;font-weight:600;font-size:16px;margin-top:12px}
+.act{background:var(--ac);color:#14213d}.cram{background:var(--fg);color:var(--bg)}
+.panel{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:12px 14px;margin-top:12px}.panel[hidden]{display:none}
+.ck{display:block;padding:4px 0}
+#out{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:6px 16px 14px}
+#out p{margin:6px 0}#out ul{padding-inline-start:22px}
+.o,.opt{display:block;width:100%;text-align:start;background:var(--bg);border:1px solid var(--bd);border-radius:10px;padding:8px 12px;margin:6px 0}
+.opt.ok{border-color:var(--ok)}.opt.bad{border-color:var(--bad)}
+.why{font-size:14px;color:var(--mut)}.score{font-weight:800;padding:10px 0}
+.exports{margin-top:10px}
+#printArea{display:none}
+@media print{body>*:not(#printArea){display:none!important}#printArea{display:block;color:#000;background:#fff}.key{page-break-before:always}}
+</style>
+</head>
+<body>
+<main>
+<div id="homeBox">
+<h1>مذاكرة PT</h1>
+<p class="sub">شرح وملخصات وكويزات للمراجعة السريعة. المرجع الأساسي هو المحاضرة.</p>
+<div class="chips" id="subjects"></div>
+<div class="chips" id="kinds"></div>
+<div id="list"></div>
+<button class="cram" id="cramBtn">🐕 زنقة الكلاب</button>
+<div class="panel" id="cramPanel" hidden>
+<p class="sub">اختار المحاضرات اللي داخلة في الامتحان.</p>
+<div id="cramList"></div>
+<button class="act" id="cramGo">اعمل الملخص</button>
+</div>
+</div>
+<div id="view" hidden>
+<button class="btn" id="back">رجوع</button>
+<h2 id="vt"></h2>
+<div class="chips" id="tabs"></div>
+<div id="out"></div>
+<div class="exports"><button class="btn" id="dlHtml">تحميل HTML</button><button class="btn" id="dlPdf">حفظ PDF</button></div>
+</div>
+</main>
+<div id="printArea"></div>
+<script>
+window.COURSES={
+Anatomy:{lec:[{
+title:"Skeletal Tissues",
+slides:[
+[2,"وظايف الهيكل العظمي","5 وظايف (PS BS L): Protection حماية المخ والقلب والرئة، Support دعم الجسم، Blood cell formation تكوين الدم في النخاع الأحمر، Storage تخزين الكالسيوم، Leverage العضلات بتتشبك في العظم فيشتغل كرافعة للحركة."],
+[3,"تصنيف الـ 206 عظمة","3 طرق: حسب الموقع (Axial وAppendicular)، حسب الشكل (5 أنواع)، وحسب التركيب (Compact وSpongy). وده معنى 5-2-2."],
+[4,"Axial vs Appendicular","Axial = 80 عظمة (جمجمة وعمود فقري وقفص صدري) للحماية والدعم. Appendicular = 126 (الأطراف + الحزامين) للحركة. 80 + 126 = 206. الـ 80 = Cranium 8 + Face 14 + Other 7 (Hyoid وعظيمات الأذن) + Vertebral column 26 + Thorax 25."],
+[5,"الأشكال الخمسة","Long (Femur) رافعة، Short (Carpals) حركة في اتجاهات كتير، Flat (Scapula, Sternum) حماية ومساحة للعضلات، Irregular (Vertebrae) تحمّل ضغط من اتجاهات مختلفة، Sesamoid (Patella) بكرة جوه الوتر."],
+[6,"Study of the bone","ملخص الدكتورة بالأرقام: 206 عظمة، 4 مكونات، 5 وظايف، 3 طرق تصنيف (5-2-2)، ونوعين من Bone markings."],
+[7,"التركيب الكيميائي","الأملاح (Calcium carbonate وphosphate) 60-70% للصلابة ومقاومة الضغط. الكولاجين والماية 25-30% للمرونة ومقاومة الشد. مع السن الكولاجين بيقل فالعظم يبقى هش."],
+[8,"Cortical vs Cancellous","Cortical كثيف ومسامه قليل، بيكوّن القشرة الخارجية ويتحمل ضغط أعلى. Cancellous إسفنجي أخف وبيمتص الصدمات، موجود تحت القشرة وفي أطراف العظام الطويلة."],
+[9,"تشريح العظمة الطويلة","من برّه لجوّه: Periosteum (غشاء خارجي) ثم Diaphysis (الشافت) ثم Epiphysis (الطرفين: إسفنجي ونخاع أحمر) ثم Endosteum (غشاء داخلي) ثم Medullary cavity (نخاع أحمر أو أصفر)."],
+[10,"Ossification","Cartilage model ثم Primary center في الـ diaphysis ثم Secondary centers في الـ epiphyses ويفضل Epiphyseal plate بيزوّد الطول، وعند النضج بتلتحم ويقف النمو. في الأشعة بتظهر كفجوات داكنة (Radiolucent)."],
+[11,"Bone markings","نتوءات بتشبّك فيها العضلات والأربطة (Trochanter, Tuberosity, Tubercle, Crest, Line, Epicondyle)، نتوءات في المفاصل (Condyle, Head, Facet)، ومنخفضات وفتحات (Foramen, Fossa, Groove)."],
+[12,"Wolff's law","العظم بيتأقلم مع الحمل: Stress ثم Remodeling ثم زيادة كتلة العظم. مهم في التأهيل لأن الأحمال اللي بتحطها بتغيّر العظم."],
+[13,"جدول 2-1 (Lab)","العظام حسب الموقع: Single زي Frontal وSternum، Paired زي Parietal وFemur، Multiple زي Vertebrae وCarpals. Ribs 12 زوج: True 7 وFalse 3 وFloating 2."],
+[14,"جدول 2-2 (Lab)","Long: Humerus وFemur وTibia. Short: Carpals وTarsals. Flat: Scapula وIlium وRibs وSternum. Irregular: Vertebrae وSphenoid وEthmoid وSacrum وCoccyx وMandible. تنبيه: الجدول حاطط Patella تحت Flat وسلايد 5 بتقول Sesamoid."],
+[15,"جدول 2-3 (Lab)","Foramen للأوعية والأعصاب، Fossa منخفض، Groove أخدود، Meatus قناة، Sinus تجويف هوا. Condyle وHead وFacet وEminence للمفاصل. Crest وLine وSpine وTubercle وTuberosity وTrochanter وEpicondyle للأوتار والأربطة."]
+],
+sum:[
+["الوظايف (PS BS L)",["Protection وSupport","Blood formation (النخاع الأحمر)","Storage (الكالسيوم)","Leverage (رافعة للعضلات)"]],
+["الأرقام",["206 عظمة = 80 Axial + 126 Appendicular","Ribs 12 زوج: True 7 وFalse 3 وFloating 2","Vertebral column 26 وThorax 25"]],
+["التركيب",["أملاح 60-70%: صلابة ومقاومة ضغط","كولاجين وماية 25-30%: مرونة ومقاومة شد","مع السن الكولاجين بيقل والعظم يبقى هش"]],
+["التصنيف 5-2-2",["الشكل: Long وShort وFlat وIrregular وSesamoid","الموقع: Axial وAppendicular","التركيب: Compact وSpongy"]],
+["العظمة الطويلة",["Periosteum وDiaphysis وEpiphysis وEndosteum وMedullary cavity"]],
+["Ossification",["غضروف ثم Primary center ثم Secondary centers ثم Epiphyseal plate ثم التحام عند النضج"]],
+["Bone markings",["التصاق: Trochanter وTuberosity وTubercle وCrest وLine وEpicondyle","مفاصل: Condyle وHead وFacet","فتحات: Foramen وFossa وGroove"]],
+["Wolff's law",["الحمل المتكرر يزوّد كتلة العظم وكثافته"]]
+],
+quiz:[
+["كام عدد عظام الـ Axial skeleton؟",["126","80","206","64"],1,"Axial = 80 وAppendicular = 126"],
+["أي وظيفة هي Hematopoiesis؟",["تخزين الكالسيوم","تكوين الدم في النخاع الأحمر","الحماية","الرافعة"],1,"النخاع الأحمر بيصنع خلايا الدم"],
+["نسبة الأملاح تقريباً في وزن العظم؟",["10-20%","25-30%","60-70%","90%"],2,"الأملاح 60-70% والباقي ماية وكولاجين"],
+["إيه اللي بيدي العظم المرونة ومقاومة الشد؟",["Calcium phosphate","Collagen","Calcium carbonate","Periosteum"],1,"الكولاجين مسؤول عن الشد والمرونة"],
+["أي عظمة من نوع Sesamoid؟",["Femur","Patella","Scapula","Carpals"],1,"Patella بتشتغل كبكرة جوه الوتر"],
+["الغشاء اللي بيبطّن التجويف النخاعي من جوه؟",["Periosteum","Endosteum","Epiphysis","Diaphysis"],1,"Endosteum داخلي وPeriosteum خارجي"],
+["إيه اللي بيزوّد طول العظمة عند الأطفال؟",["Epiphyseal plate","Periosteum","Medullary cavity","Foramen"],0,"الـ growth plate غضروف بيتعظّم مع النضج"],
+["Trochanter ينتمي لأنهي مجموعة؟",["منخفضات وفتحات","أسطح مفاصل","التصاق عضلات وأربطة","قنوات هوا"],2,"نتوء كبير لالتصاق العضلات"]
+]
+}],sec:[]},
+Kinesiology:{lec:[],sec:[]},Physiology:{lec:[],sec:[]},Histology:{lec:[],sec:[]},
+Biochemistry:{lec:[],sec:[]},Biophysics:{lec:[],sec:[]},Terminology:{lec:[]}
+};
+</script>
+<script>
+const $=s=>document.querySelector(s);
+const SUBJ=['Anatomy','Kinesiology','Physiology','Histology','Biochemistry','Biophysics','Terminology'];
+const KL={lec:'محاضرات',sec:'سكاشن'};
+const L=['أ','ب','ج','د'];
+let cur=localStorage.getItem('s')||SUBJ[0],kind='lec',ex=null;
+if(!SUBJ.includes(cur))cur=SUBJ[0];
+const items=(s=cur,k=kind)=>((window.COURSES[s]||{})[k])||[];
+const all=()=>[...items(cur,'lec').map(x=>({...x,k:'lec'})),...items(cur,'sec').map(x=>({...x,k:'sec'}))];
+function chips(el,arr,on,fn,lab=x=>x){el.innerHTML='';arr.forEach(x=>{const b=document.createElement('button');b.className='chip'+(x===on?' on':'');b.textContent=lab(x);b.onclick=()=>fn(x);el.appendChild(b)})}
+function home(){
+ $('#view').hidden=true;$('#homeBox').hidden=false;
+ chips($('#subjects'),SUBJ,cur,s=>{cur=s;localStorage.setItem('s',s);if(s==='Terminology')kind='lec';home()});
+ const ks=cur==='Terminology'?['lec']:['lec','sec'];
+ $('#kinds').hidden=ks.length<2;chips($('#kinds'),ks,kind,k=>{kind=k;home()},k=>KL[k]);
+ const box=$('#list');box.innerHTML='';const it=items();
+ if(!it.length)box.innerHTML='<div class="empty">المحتوى قريباً.</div>';
+ it.forEach(l=>{const b=document.createElement('button');b.className='lec';b.textContent=l.title;b.onclick=()=>openLec(l);box.appendChild(b)});
+ $('#cramPanel').hidden=true;
+}
+const sumH=l=>l.sum.map(g=>'<h3>'+g[0]+'</h3><ul>'+g[1].map(x=>'<li>'+x+'</li>').join('')+'</ul>').join('');
+const exH=l=>l.slides.map(s=>'<h3>سلايد '+s[0]+': '+s[1]+'</h3><p>'+s[2]+'</p>').join('');
+const quizPrint=l=>l.quiz.map((q,i)=>'<div class="q"><p><b>'+(i+1)+'. '+q[0]+'</b></p>'+q[1].map((o,j)=>'<div class="o">'+L[j]+') '+o+'</div>').join('')+'</div>').join('')+'<div class="key"><h3>الإجابات النموذجية</h3>'+l.quiz.map((q,i)=>'<p>'+(i+1)+'. <b>'+L[q[2]]+'</b> - '+q[1][q[2]]+'</p>').join('')+'</div>';
+function show(title){$('#homeBox').hidden=true;$('#view').hidden=false;$('#vt').textContent=title;window.scrollTo(0,0)}
+function openLec(l,tab='ex'){
+ show(l.title);
+ chips($('#tabs'),['ex','sum','quiz'],tab,t=>openLec(l,t),t=>({ex:'الشرح',sum:'الملخص',quiz:'كويز'}[t]));
+ const out=$('#out');
+ if(tab==='quiz'){drawQuiz(l,out);ex={title:l.title+' - كويز',html:quizPrint(l)}}
+ else{const h=tab==='ex'?exH(l):sumH(l);out.innerHTML=h;ex={title:l.title+' - '+(tab==='ex'?'الشرح':'الملخص'),html:h}}
+}
+function drawQuiz(l,out){
+ out.innerHTML='';let done=0,right=0;
+ const sc=document.createElement('div');sc.className='score';sc.textContent='النتيجة: 0 / '+l.quiz.length;
+ l.quiz.forEach((q,i)=>{
+  const box=document.createElement('div');box.innerHTML='<p><b>'+(i+1)+'. '+q[0]+'</b></p>';
+  const why=document.createElement('div');why.className='why';let ans=false;
+  q[1].forEach((o,j)=>{const b=document.createElement('button');b.className='opt';b.textContent=o;
+   b.onclick=()=>{if(ans)return;ans=true;done++;box.querySelectorAll('.opt')[q[2]].classList.add('ok');
+    if(j===q[2])right++;else b.classList.add('bad');why.textContent=q[3];
+    sc.textContent='النتيجة: '+right+' / '+l.quiz.length+(done===l.quiz.length?' - خلصت!':'')};
+   box.appendChild(b)});
+  box.appendChild(why);out.appendChild(box);
+ });
+ out.appendChild(sc);
+}
+$('#cramBtn').onclick=()=>{
+ const p=$('#cramPanel'),a=all(),b=$('#cramList');p.hidden=!p.hidden;
+ b.innerHTML=a.length?'':'<div class="empty">مفيش محاضرات للمادة دي لسه.</div>';
+ a.forEach((l,i)=>{const lb=document.createElement('label');lb.className='ck';lb.innerHTML='<input type="checkbox" value="'+i+'" checked> '+(l.k==='sec'?'[سكشن] ':'[محاضرة] ')+l.title;b.appendChild(lb)});
+};
+$('#cramGo').onclick=()=>{
+ const a=all(),sel=[...document.querySelectorAll('#cramList input:checked')].map(c=>a[+c.value]);
+ if(!sel.length)return;
+ const h=sel.map(l=>'<h2>'+l.title+'</h2>'+sumH(l)).join('')+'<h2>أسئلة متوقعة</h2>'+sel.flatMap(l=>l.quiz).map((q,i)=>'<p><b>'+(i+1)+'. '+q[0]+'</b><br>'+q[1][q[2]]+' - '+q[3]+'</p>').join('');
+ const t='زنقة الكلاب - '+cur;show(t);$('#tabs').innerHTML='';$('#out').innerHTML=h;ex={title:t,html:h};
+};
+$('#back').onclick=home;
+$('#dlHtml').onclick=()=>{
+ const d='<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><title>'+ex.title+'</title><style>body{font-family:Cairo,Tahoma,Arial,sans-serif;max-width:760px;margin:24px auto;padding:0 16px;line-height:1.9;color:#14213d}.key{page-break-before:always}</style></head><body><h1>'+ex.title+'</h1>'+ex.html+'</body></html>';
+ const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([d],{type:'text/html'}));a.download=ex.title.replace(/[\\/:*?"<>|]/g,'')+'.html';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),2000);
+};
+$('#dlPdf').onclick=()=>{$('#printArea').innerHTML='<h1>'+ex.title+'</h1>'+ex.html;window.print()};
+home();
+</script>
+</body>
+</html>
